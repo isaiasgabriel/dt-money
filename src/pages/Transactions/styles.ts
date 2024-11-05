@@ -11,7 +11,7 @@ export const TransactionTable = styled.table`
   width: 100%;
   border-collapse: separate; // this options enables you to put a gap between each row
   border-spacing: 0 0.5rem; // we define this gap through this option, 0 on the sides, 0.5rem up and down
-  /* margin-top: 1.5rem; */
+  margin-top: 1.5rem;
 
   td {
     padding: 1.25rem 2rem;
