@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 import * as Dialog from '@radix-ui/react-dialog' // Docs: https://www.radix-ui.com/primitives/docs/components/dialog
+import * as RadioGroup from '@radix-ui/react-radio-group' // Docs: https://www.radix-ui.com/primitives/docs/components/radio-group
+
+// Radio Group - a set of checkable buttons, a.k.a. radio buttons,
+// where no more than one of the buttons can be checked at a time.
 
 export const Overlay = styled(Dialog.Overlay)`
   position: fixed;
@@ -69,7 +73,7 @@ export const CloseButton = styled(Dialog.Close)`
   color: ${(props) => props.theme['gray-500']};
 `
 
-export const TransactionType = styled.div`
+export const TransactionType = styled(RadioGroup.Root)`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
@@ -80,7 +84,9 @@ interface TransactionTypeButtonProps {
   variant?: 'income' | 'outcome'
 }
 
-export const TransactionTypeButton = styled.button<TransactionTypeButtonProps>`
+export const TransactionTypeButton = styled(
+  RadioGroup.Item,
+)<TransactionTypeButtonProps>`
   background: ${(props) => props.theme['gray-700']};
   padding: 1rem;
   display: flex;
@@ -97,5 +103,23 @@ export const TransactionTypeButton = styled.button<TransactionTypeButtonProps>`
       props.variant === 'income'
         ? props.theme['green-300']
         : props.theme['red-300']};
+  }
+
+  // This data-state property is created by the radix when you click on the button
+  &[data-state='checked'] {
+    color: ${(props) => props.theme.white};
+    background: ${(props) =>
+      props.variant === 'income'
+        ? props.theme['green-500']
+        : props.theme['red-500']};
+
+    svg {
+      color: ${(props) => props.theme.white};
+    }
+  }
+
+  &[data-state='unchecked']:hover {
+    transition: background-color 0.2s;
+    background: ${(props) => props.theme['gray-600']};
   }
 `

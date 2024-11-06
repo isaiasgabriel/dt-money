@@ -5,7 +5,7 @@ import {
   Overlay,
   TransactionType,
   TransactionTypeButton,
-} from './styltes'
+} from './styles'
 import { ArrowCircleDown, ArrowCircleUp, X } from 'phosphor-react'
 
 export function NewTransactionModal() {
@@ -24,12 +24,15 @@ export function NewTransactionModal() {
           <input type="text" placeholder="Price" required />
           <input type="text" placeholder="Category" required />
 
+          {/* TransactionType = RadioGroup.Root */}
           <TransactionType>
-            <TransactionTypeButton variant="income">
+            {/* TransactionTypeButton = RadioGroup.Item */}
+            <TransactionTypeButton variant="income" value="income">
+              {/* 'value' is obligatory for the radio group */}
               <ArrowCircleUp size={24} />
               Income
             </TransactionTypeButton>
-            <TransactionTypeButton variant="outcome">
+            <TransactionTypeButton variant="outcome" value="outcome">
               <ArrowCircleDown size={24} />
               Outcome
             </TransactionTypeButton>
