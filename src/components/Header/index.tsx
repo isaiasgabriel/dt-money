@@ -1,6 +1,7 @@
 import { HeaderContainer, HeaderContent, NewTransactionButton } from './styles'
 import logoImg from '../../assets/logo.svg'
 import * as Dialog from '@radix-ui/react-dialog' // Docs: https://www.radix-ui.com/primitives/docs/components/dialog
+import { NewTransactionModal } from '../NewTransactionModal'
 
 export function Header() {
   return (
@@ -16,17 +17,7 @@ export function Header() {
             */}
             <NewTransactionButton>New Transaction</NewTransactionButton>
           </Dialog.Trigger>
-
-          {/* Dialog.Portal will create the component outside the root */}
-          <Dialog.Portal>
-            <Dialog.Overlay />
-            {/* Dialog.Overlay it's basically the background with less opacity */}
-            <Dialog.Content>
-              <Dialog.Title>New Transaction</Dialog.Title>
-
-              <Dialog.Close />
-            </Dialog.Content>
-          </Dialog.Portal>
+          <NewTransactionModal />
         </Dialog.Root>
       </HeaderContent>
     </HeaderContainer>
