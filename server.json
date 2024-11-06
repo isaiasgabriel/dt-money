@@ -1,0 +1,18 @@
+{
+  "transactions": [
+    {
+      "id": 1,
+      "description": "web development",
+      "type": "income",
+      "price": 14000,
+      "createdAt": "2024-11-06T22: 32: 04.863Z"
+    },
+    {
+      "id": 2,
+      "description": "hamburguer",
+      "type": "outcome",
+      "price": 50,
+      "createdAt": "2024-11-06T22: 35: 17.379Z"
+    }
+  ]
+}
