@@ -70,7 +70,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
   )
   useEffect(() => {
     fetchTransactions()
-  }, [])
+  }, [fetchTransactions])
   return (
     // 4. "export" them through the TransactionsContext.Provider with the values that you want in your context:
     <TransactionsContext.Provider
