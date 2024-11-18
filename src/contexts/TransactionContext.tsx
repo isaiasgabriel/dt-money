@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { useCallback, ReactNode, useEffect, useState } from 'react'
 import { api } from '../lib/axios'
 import { createContext } from 'use-context-selector'
 
@@ -36,7 +36,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
   // 3. Create the states that you want in your context:
   const [transactions, setTransactions] = useState<Transaction[]>([])
 
-  async function fetchTransactions(query?: string) {
+  const fetchTransactions = useCallback(async (query?: string) => {
     const response = await api.get('/transactions', {
       params: {
         q: query,
@@ -46,22 +46,28 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     })
 
     setTransactions(response.data)
-  }
+  }, [])
 
-  async function createTransaction(data: CreateTransactionInput) {
-    const { description, category, price, type } = data
+  // useCallback memoizes the callback function to prevent it from being recreated
+  // unless its dependencies (in the dependency array) change, improving performance.
+  const createTransaction = useCallback(
+    async (data: CreateTransactionInput) => {
+      const { description, category, price, type } = data
 
-    const response = await api.post('/transactions', {
-      description,
-      category,
-      price,
-      type,
-      createdAt: new Date(),
-    })
+      const response = await api.post('/transactions', {
+        description,
+        category,
+        price,
+        type,
+        createdAt: new Date(),
+      })
 
-    setTransactions((state) => [response.data, ...state]) // it'll add as the first of the transactions table
-  }
-
+      setTransactions((state) => [response.data, ...state]) // it'll add as the first of the transactions table
+    },
+    [],
+    // This is the dependency array; it specifies the values that the function depends on.
+    // If any of these values change, the function will be recreated
+  )
   useEffect(() => {
     fetchTransactions()
   }, [])
