@@ -5,6 +5,7 @@ import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TransactionsContext } from '../../../contexts/TransactionContext'
 import { useContextSelector } from 'use-context-selector'
+import { memo } from 'react'
 
 // 1. Define a zod schema to validate the form data
 const searchFormSchema = z.object({
@@ -14,7 +15,7 @@ const searchFormSchema = z.object({
 // 2. Define a TypeScript type based on the Zod schema.
 type SearchFormInputs = z.infer<typeof searchFormSchema>
 
-export function SearchForm() {
+function SearchFormComponent() {
   const fetchTransactions = useContextSelector(
     TransactionsContext,
     (context) => {
@@ -52,3 +53,23 @@ export function SearchForm() {
     </SearchFormContainer>
   )
 }
+
+export const SearchForm = memo(SearchFormComponent)
+
+// Why react renders a component? Triggers!
+// - Hooks
+// - Props
+// - Parent rendered
+
+// What's the react render flow?
+// 1. React recreate the HTML of the interface
+// 2. It compares with the current HTML version displayed
+// 3. IF something changed, it rewrites the HTML on the screen
+
+// Memo: it adds another step into this equation.
+// 0. Hooks, props changed (deep comparison)
+// 0.1. Compare with the previous hook and props values
+// 0.2. IF something changed, it'll allow a new render
+
+// In pages where you don't have a lot of HTML it looks overengineering but
+// as the project grows and it has more and more components, it can be useful to use memo.
