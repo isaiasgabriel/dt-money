@@ -9,9 +9,17 @@ interface Transaction {
   createdAt: string
 }
 
+interface CreateTransactionInput {
+  description: string
+  price: number
+  category: string
+  type: 'income' | 'outcome'
+}
+
 interface TransactionsContextType {
   transactions: Transaction[]
   fetchTransactions: (query?: string) => Promise<void>
+  createTransaction: (data: CreateTransactionInput) => Promise<void>
 }
 
 interface TransactionsProviderProps {
@@ -30,10 +38,26 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     const response = await api.get('/transactions', {
       params: {
         q: query,
+        _sort: 'createdAt',
+        _order: 'desc',
       },
     })
 
     setTransactions(response.data)
+  }
+
+  async function createTransaction(data: CreateTransactionInput) {
+    const { description, category, price, type } = data
+
+    const response = await api.post('/transactions', {
+      description,
+      category,
+      price,
+      type,
+      createdAt: new Date(),
+    })
+
+    setTransactions((state) => [response.data, ...state]) // it'll add as the first of the transactions table
   }
 
   useEffect(() => {
@@ -41,7 +65,9 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
   }, [])
   return (
     // 4. "export" them through the TransactionsContext.Provider with the values that you want in your context:
-    <TransactionsContext.Provider value={{ transactions, fetchTransactions }}>
+    <TransactionsContext.Provider
+      value={{ transactions, fetchTransactions, createTransaction }}
+    >
       {children}
     </TransactionsContext.Provider>
   )

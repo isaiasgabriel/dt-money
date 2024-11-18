@@ -10,7 +10,8 @@ import { ArrowCircleDown, ArrowCircleUp, X } from 'phosphor-react'
 import * as z from 'zod'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { api } from '../../lib/axios'
+import { useContext } from 'react'
+import { TransactionsContext } from '../../contexts/TransactionContext'
 
 const newTransactionFormSchema = z.object({
   description: z.string(),
@@ -22,6 +23,7 @@ const newTransactionFormSchema = z.object({
 type NewTransactionFormInputs = z.infer<typeof newTransactionFormSchema>
 
 export function NewTransactionModal() {
+  const { createTransaction } = useContext(TransactionsContext)
   const {
     // Each time you want to add a new info into your form you'll need to use the control from the use from
     control,
@@ -37,33 +39,7 @@ export function NewTransactionModal() {
   })
 
   async function handleCreateNewTransaction(data: NewTransactionFormInputs) {
-    await api.post('/transactions', {
-      ...data,
-      createdAt: new Date(),
-    })
-    //
-    // OR
-    //
-    // await api.post('/transactions', {
-    //   description: data.description,
-    //   value: data.type,
-    //   category: data.category,
-    //   type: data.type,
-    //   createdAt: new Date(),
-    // })
-    //
-    // OR
-    //
-    // const { category, description, price, type } = data
-
-    // await api.post('/transactions', {
-    //   description,
-    //   price,
-    //   category,
-    //   type,
-    //   createdAt: new Date(),
-    // })
-
+    await createTransaction(data)
     reset() // it'll reset the form input fields
   }
 
