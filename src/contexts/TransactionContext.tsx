@@ -1,5 +1,6 @@
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { api } from '../lib/axios'
+import { createContext } from 'use-context-selector'
 
 interface Transaction {
   id: number
@@ -27,6 +28,7 @@ interface TransactionsProviderProps {
 }
 
 // 1. Create the context:
+// Instead of using the createContext from react we'll use from the use-context-selector
 export const TransactionsContext = createContext({} as TransactionsContextType)
 
 // 2. Create the provider (the element that'll wrap the components that you want to access the context):

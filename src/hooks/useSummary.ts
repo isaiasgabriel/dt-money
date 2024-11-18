@@ -1,8 +1,10 @@
-import { useContext } from 'react'
 import { TransactionsContext } from '../contexts/TransactionContext'
+import { useContextSelector } from 'use-context-selector'
 
 export function useSummary() {
-  const { transactions } = useContext(TransactionsContext)
+  const transactions = useContextSelector(TransactionsContext, (context) => {
+    return context.transactions
+  })
 
   // reduce is a function that iterates thorugh an array and REDUCE into a new data structure
   // this new data structure is specified as the second argument of the function ({income: 0, outcome: 0, total: 0})

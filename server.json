@@ -29,6 +29,14 @@
       "type": "income",
       "createdAt": "2024-11-18T02:19:09.499Z",
       "id": 4
+    },
+    {
+      "description": "lunch",
+      "category": "food",
+      "price": 20,
+      "type": "outcome",
+      "createdAt": "2024-11-18T17:23:02.290Z",
+      "id": 5
     }
   ]
 }
