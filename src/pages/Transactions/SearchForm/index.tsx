@@ -3,6 +3,8 @@ import { SearchFormContainer } from './styles'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useContext } from 'react'
+import { TransactionsContext } from '../../../contexts/TransactionContext'
 
 // 1. Define a zod schema to validate the form data
 const searchFormSchema = z.object({
@@ -13,6 +15,7 @@ const searchFormSchema = z.object({
 type SearchFormInputs = z.infer<typeof searchFormSchema>
 
 export function SearchForm() {
+  const { fetchTransactions } = useContext(TransactionsContext)
   // - `register` is used to connect input fields with react-hook-form.
   // - `handleSubmit` indicates which function to execute when the form is submitted - it must be added inside the form parent component.
   // - `formState` gives access to the form's current state, including `isSubmitting`.
@@ -26,10 +29,7 @@ export function SearchForm() {
   })
 
   async function handleSearchTransactions(data: SearchFormInputs) {
-    // We're simulating a delay of 2 seconds to show how the buttons works when it's state is `isSubmitting`
-    // While this delay occurs, `isSubmitting` is set to true, disabling the submit button.
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    console.log(data)
+    await fetchTransactions(data.query)
   }
 
   return (
