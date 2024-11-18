@@ -10,6 +10,7 @@ import { ArrowCircleDown, ArrowCircleUp, X } from 'phosphor-react'
 import * as z from 'zod'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { api } from '../../lib/axios'
 
 const newTransactionFormSchema = z.object({
   description: z.string(),
@@ -26,6 +27,7 @@ export function NewTransactionModal() {
     control,
     register,
     handleSubmit,
+    reset,
     formState: { isSubmitting },
   } = useForm<NewTransactionFormInputs>({
     resolver: zodResolver(newTransactionFormSchema),
@@ -35,9 +37,34 @@ export function NewTransactionModal() {
   })
 
   async function handleCreateNewTransaction(data: NewTransactionFormInputs) {
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    await api.post('/transactions', {
+      ...data,
+      createdAt: new Date(),
+    })
+    //
+    // OR
+    //
+    // await api.post('/transactions', {
+    //   description: data.description,
+    //   value: data.type,
+    //   category: data.category,
+    //   type: data.type,
+    //   createdAt: new Date(),
+    // })
+    //
+    // OR
+    //
+    // const { category, description, price, type } = data
 
-    console.log(data)
+    // await api.post('/transactions', {
+    //   description,
+    //   price,
+    //   category,
+    //   type,
+    //   createdAt: new Date(),
+    // })
+
+    reset() // it'll reset the form input fields
   }
 
   return (
